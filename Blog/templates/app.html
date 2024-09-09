@@ -10,3 +10,63 @@
         <img height="200px" width="600px" src="{% static 'pic.png' %}"
     </body>
 </html>
+
+<html>
+    <head>
+        
+    </head>
+    <style>
+        .table {
+        display: table;
+        width: 100%;
+        }
+        .table-row {
+            display: table-row;
+        }
+        .table-cell {
+            display: table-cell;
+            padding: 10px;
+            vertical-align: top;
+            border-bottom: 1px solid #ccc;
+        }
+        .Head {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    </style>
+    <body>
+        
+
+        <h2>Employees</h2>
+        <div class="table">
+            <div class="table-row">
+                <div class="table-cell"><strong>Name</strong></div>
+                <div class="table-cell"><strong>ID</strong></div>
+                <div class="table-cell"><strong>Address</strong></div>
+            </div>
+            {% for Employee in emp %}
+            <div class="table-row">
+                <div class="table-cell">{{Employee.emp_name}}</div>
+                <div class="table-cell">{{Employee.emp_id}}</div>
+                <div class="table-cell">{{Employee.emp_address}}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2>Books</h2>
+        <div class="table">
+            <div class="table-row">
+                <div class="table-cell"><strong>Name</strong></div>
+                <div class="table-cell"><strong>ID</strong></div>
+            </div>
+            {% for Book in books %}
+            <div class="table-row">
+                <div class="table-cell">{{Book.book_name}}</div>
+                <div class="table-cell">{{Book.book_id}}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </body>
+</html>
