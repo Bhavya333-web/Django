@@ -7,8 +7,13 @@ def app(request):
     books = Book.objects.all()
     return render(request, 'app.html', {'emp': emp, 'books': books})
 
-# Remove the style view or modify it to serve an actual HTML template if needed
-def style(request):
-    # This should render an HTML template, not a CSS file
-    return render(request, 'app.html')  # Replace 'your_template.html' with the correct HTML template file
+def home_view(request):
+    return HttpResponse("<h1>Welcome to the Home Page</h1>")
 
+def about_view(request):
+    return HttpResponse("<h1>About Us Page</h1>")
+
+def contact_view(request):
+    return HttpResponse("<h1>Contact Us Page</h1>")
+def profile_view(request, user_id):
+    return HttpResponse(f"<h1>User Profile: {user_id}</h1>")
