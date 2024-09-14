@@ -15,5 +15,3 @@ def about_view(request):
 
 def contact_view(request):
     return HttpResponse("<h1>Contact Us Page</h1>")
-def profile_view(request, user_id):
-    return HttpResponse(f"<h1>User Profile: {user_id}</h1>")
