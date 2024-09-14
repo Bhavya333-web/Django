@@ -7,11 +7,17 @@ def app(request):
     books = Book.objects.all()
     return render(request, 'app.html', {'emp': emp, 'books': books})
 
+from django.http import HttpResponse
+
 def home_view(request):
-    return HttpResponse("<h1>Welcome to the Home Page</h1>")
+    return HttpResponse("Welcome to the Home Page")
 
 def about_view(request):
-    return HttpResponse("<h1>About Us Page</h1>")
+    return HttpResponse("This is the About Page")
 
 def contact_view(request):
-    return HttpResponse("<h1>Contact Us Page</h1>")
+    return HttpResponse("Contact Us at contact@example.com")
+
+
+
+
