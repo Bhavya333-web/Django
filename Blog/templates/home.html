@@ -1,9 +1,12 @@
-{% extends 'Blog/app.html' %}
+{% extends 'app.html' %}
 
-{% block title %}Home{% endblock %}
+{% load static %}  <!-- Add this line -->
+
+{% block title %}Home - Blogapp{% endblock %}
 
 {% block content %}
-    <h2>Welcome to My Blog</h2>
-    <p>This is the home page of my blog where you can explore exciting content on various topics.</p>
-    <img src="{% static 'Blog/pic.png' %}" alt="Blog Image" height="300px" width="100%">
+    <h2>Welcome to the Blog</h2>
+    <p>This is a place where we share our thoughts on technology, life, and more. Stay tuned for the latest updates!</p>
+    
 {% endblock %}
+

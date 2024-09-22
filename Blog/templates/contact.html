@@ -1,8 +1,30 @@
-{% extends 'Blog/app.html' %}
+{% extends 'app.html' %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}Contact Us - Blogapp{% endblock %}
 
 {% block content %}
     <h2>Contact Us</h2>
-    <p>If you'd like to reach out, feel free to email us at <strong>contact@example.com</strong> or visit our social media pages.</p>
+    <p>We’d love to hear from you! You can reach us at:</p>
+    <ul>
+        <li>Email: bhavyamittal575@gmail.com</li>
+        <li>Phone: 8439509162</li>
+    </ul>
+
+    <h3>Contact Form</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ contact_form.as_p }}
+        <button type="submit" name="contact_form">Submit Contact Form</button>
+    </form>
+
+    <h3>Model Form</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ model_form.as_p }}
+        <button type="submit" name="model_form">Submit Model Form</button>
+    </form>
+
+    {% if success_message %}
+        <p>{{ success_message }}</p>
+    {% endif %}
 {% endblock %}
