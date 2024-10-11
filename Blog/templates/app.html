@@ -53,7 +53,17 @@
             </div>
             {% endfor %}
         </div>
-
+<!-- Tag filtering dropdown -->
+<form method="get" action="">
+    <label for="tag">Filter by Tag:</label>
+    <select name="tag" id="tag">
+        <option value="">--All Tags--</option>
+        {% for tag in tags %}
+            <option value="{{ tag.name }}" {% if tag.name == tag_filter %}selected{% endif %}>{{ tag.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+</form>
         <h2>Books</h2>
         <div class="table">
             <div class="table-row">
