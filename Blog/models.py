@@ -29,4 +29,19 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+    from django.db import models
+from taggit.managers import TaggableManager
+
+class Blog(models.Model):
+    title = models.CharField(max_length=200)  # Title of the blog post
+    content = models.TextField()  # Content of the blog post
+    author = models.CharField(max_length=100)  # Author of the blog post
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set the date when created
+    updated_at = models.DateTimeField(auto_now=True)  # Automatically set the date when updated
+    tags = TaggableManager()  # Allows tags to be added to the blog post
+
+    def __str__(self):
+        return self.title  # Display the blog title in the admin panel
+
+    
     

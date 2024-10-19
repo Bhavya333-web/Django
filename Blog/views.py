@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required  # Add this line for l
 from .models import Employee, Book, Blog  # Add Blog model
 from .forms import ContactForm, ContactModelForm, BookForm, BlogForm  # Add BlogForm
 from taggit.models import Tag
+from .forms import BlogForm
+
 
 # Combined Contact Form View
 def contact_view(request):
@@ -65,6 +67,15 @@ def book_create_edit(request, book_id=None):
         form = BookForm(instance=book)
 
     return render(request, 'book_form.html', {'form': form})
+def create_blog(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_page')  # Redirect to a success page or another view
+    else:
+        form = BlogForm()
+    return render(request, 'blog/create_blog.html', {'form': form})
 
 # Home Page View
 def home_view(request):
