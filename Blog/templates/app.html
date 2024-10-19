@@ -1,24 +1,27 @@
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogapp</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
-
-    </head>
-    <body>
-        <h1 class="Head">Welcome page of my Blogapp</h1>
-        <img height="200px" width="600px" src="{% static 'pic.png' %}"
-    </body>
-</html>
-
-<html>
-    <head>
-        
-    </head>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
         .table {
-        display: table;
-        width: 100%;
+            display: table;
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
         }
         .table-row {
             display: table-row;
@@ -26,92 +29,93 @@
         .table-cell {
             display: table-cell;
             padding: 10px;
+            border: 1px solid #ccc;
             vertical-align: top;
-            border-bottom: 1px solid #ccc;
         }
-        .Head {
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .filter-form {
             text-align: center;
             margin-bottom: 20px;
         }
-
     </style>
-    <body>
-        
-
-        <h2>Employees</h2>
-        <div class="table">
-            <div class="table-row">
-                <div class="table-cell"><strong>Name</strong></div>
-                <div class="table-cell"><strong>ID</strong></div>
-                <div class="table-cell"><strong>Address</strong></div>
-            </div>
-            {% for Employee in emp %}
-            <div class="table-row">
-                <div class="table-cell">{{Employee.emp_name}}</div>
-                <div class="table-cell">{{Employee.emp_id}}</div>
-                <div class="table-cell">{{Employee.emp_address}}</div>
-            </div>
-            {% endfor %}
-        </div>
-
-        <h2>Books</h2>
-        <!-- Tag filtering dropdown -->
-<form method="get" action="">
-    
-    <label for="tag">Filter by Tag:</label>
-    <select name="tag" id="tag">
-        <option value="">--All Tags--</option>
-        {% for tag in tags %}
-            <option value="{{ tag.name }}" {% if tag.name == tag_filter %}selected{% endif %}>{{ tag.name }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Filter</button>
-</form>
-        <div class="table">
-            <div class="table-row">
-                <div class="table-cell"><strong>Name</strong></div>
-                <div class="table-cell"><strong>ID</strong></div>
-            </div>
-            {% for Book in books %}
-            <div class="table-row">
-                <div class="table-cell">{{Book.book_name}}</div>
-                <div class="table-cell">{{Book.book_id}}</div>
-            </div>
-            {% endfor %}
-        </div>
-
-    </body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Blogapp{% endblock %}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'Blog/style.css' %}">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Blog</h1>
-    </header>
+    <h1>Welcome to the Blogapp</h1>
+    <img height="200px" width="600px" src="{% static 'pic.png' %}" alt="Welcome Image">
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    <h2>Employees</h2>
+    <div class="table">
+        <div class="table-row">
+            <div class="table-cell"><strong>Name</strong></div>
+            <div class="table-cell"><strong>ID</strong></div>
+            <div class="table-cell"><strong>Address</strong></div>
+        </div>
+        {% for Employee in emp %}
+        <div class="table-row">
+            <div class="table-cell">{{ Employee.emp_name }}</div>
+            <div class="table-cell">{{ Employee.emp_id }}</div>
+            <div class="table-cell">{{ Employee.emp_address }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>Books</h2>
+    <div class="filter-form">
+        <form method="get" action="">
+            <label for="tag">Filter by Tag:</label>
+            <select name="tag" id="tag">
+                <option value="">--All Tags--</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.name }}" {% if tag.name == tag_filter %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="button">Filter</button>
+        </form>
+    </div>
+    
+    <div class="table">
+        <div class="table-row">
+            <div class="table-cell"><strong>Name</strong></div>
+            <div class="table-cell"><strong>ID</strong></div>
+            <div class="table-cell"><strong>Actions</strong></div>
+        </div>
+        {% for Book in books %}
+        <div class="table-row">
+            <div class="table-cell">{{ Book.book_name }}</div>
+            <div class="table-cell">{{ Book.book_id }}</div>
+            <div class="table-cell">
+                <a href="{% url 'create_blog' %}" class="button">Update</a>
+                <a href="{% url 'delete' Book.book_id %}" class="button">Delete</a>
+            </div>
+        </div>
+        
+        {% endfor %}
+    </div>
 
     <footer>
-        <nav class="footer-nav">
-            <ul>
-                <li><a href="/home">Home</a></li>
-                <li><a href="/about/">About</a></li>
-                <li><a href="/contact/">Contact</a></li>
+        <nav class="footer-nav" style="text-align:center;">
+            <ul style="list-style-type:none; padding: 0;">
+                <li style="display:inline; margin-right: 20px;"><a href="/home">Home</a></li>
+                <li style="display:inline; margin-right: 20px;"><a href="/about/">About</a></li>
+                <li style="display:inline;"><a href="/contact/">Contact</a></li>
             </ul>
         </nav>
         <p>&copy; 2024 My Blog</p>
     </footer>
 </body>
 </html>
-<img src="{% static 'Blog/pic.png' %}" alt="Blog Home" class="small-img">

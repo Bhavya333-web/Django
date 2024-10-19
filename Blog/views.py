@@ -4,6 +4,26 @@ from .models import Employee, Book, Blog  # Add Blog model
 from .forms import ContactForm, ContactModelForm, BookForm, BlogForm  # Add BlogForm
 from taggit.models import Tag
 from .forms import BlogForm
+from .models import Book  # Adjust this import based on your models
+
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('app')  # Redirect to your main app page or wherever you want
+    return render(request, 'delete.html', {'book_name': book.book_name})
+
+
+def create_blog(request):
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('some-view-name')  # Update with your redirect URL
+    else:
+        form = BlogForm()
+
+    return render(request, 'create_blog.html', {'form': form})
 
 
 # Combined Contact Form View
@@ -67,16 +87,8 @@ def book_create_edit(request, book_id=None):
         form = BookForm(instance=book)
 
     return render(request, 'book_form.html', {'form': form})
-def create_blog(request):
-    if request.method == 'POST':
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_page')  # Redirect to a success page or another view
-    else:
-        form = BlogForm()
-    return render(request, 'blog/create_blog.html', {'form': form})
-
+ # Redirect to a success page or another view
+   
 # Home Page View
 def home_view(request):
     return render(request, 'home.html')

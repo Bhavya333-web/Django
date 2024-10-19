@@ -1,11 +1,60 @@
 {% extends 'base.html' %} 
+
+{% block title %}Create Blog{% endblock %} 
+
 {% block content %} 
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .create-blog {
+        background: #ffffff;
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+    }
+    h1 {
+        color: #35424a;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    form input[type="text"], form textarea {
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    button {
+        background-color: #35424a;
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #455a64;
+    }
+</style>
+
 <section class="create-blog"> 
- <h1>Create Blog</h1> 
- <form method="post"> 
- {% csrf_token %} 
- {{ form.as_p }} 
- <button type="submit">Create</button> 
- </form> 
+    <h1>Create Blog</h1> 
+    <form method="post"> 
+        {% csrf_token %} 
+        {{ form.as_p }} 
+        <button type="submit">Create</button> 
+    </form> 
 </section> 
 {% endblock %} 
