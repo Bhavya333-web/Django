@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required  # Add this line
+from django.contrib.auth.decorators import login_required  # Add this line for login_required
 from .models import Employee, Book, Blog  # Add Blog model
 from .forms import ContactForm, ContactModelForm, BookForm, BlogForm  # Add BlogForm
 from taggit.models import Tag
@@ -78,7 +78,7 @@ def about_view(request):
 def static_contact_view(request):
     return render(request, 'contact_static.html')
 
-# **New Blog Update View with @login_required**
+# **Blog Update View with @login_required**
 @login_required  # Only logged-in users can update the blog
 def update_blog(request, pk):
     blog = get_object_or_404(Blog, pk=pk)  # Get the blog post by its primary key (pk)
@@ -94,3 +94,14 @@ def update_blog(request, pk):
         form.initial['tags'] = ', '.join(tag_list)  # Show current tags as a comma-separated string
 
     return render(request, 'blog/update_blog.html', {'form': form, 'blog': blog})
+
+# **Blog Delete View with @login_required**
+@login_required  # Only logged-in users can delete the blog
+def delete_blog(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)  # Get the blog post by its primary key (pk)
+
+    if request.method == 'POST':  # If the form is submitted
+        blog.delete()  # Delete the blog post
+        return redirect('home')  # Redirect to home after deletion
+
+    return render(request, 'blog/delete_blog.html', {'blog': blog})  # Render the confirmation page
