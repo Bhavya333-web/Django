@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Employee, Book
-from .forms import ContactForm, ContactModelForm, BookForm
+from django.contrib.auth.decorators import login_required  # Add this line
+from .models import Employee, Book, Blog  # Add Blog model
+from .forms import ContactForm, ContactModelForm, BookForm, BlogForm  # Add BlogForm
 from taggit.models import Tag
 
 # Combined Contact Form View
@@ -76,3 +77,20 @@ def about_view(request):
 # Static Contact Page View
 def static_contact_view(request):
     return render(request, 'contact_static.html')
+
+# **New Blog Update View with @login_required**
+@login_required  # Only logged-in users can update the blog
+def update_blog(request, pk):
+    blog = get_object_or_404(Blog, pk=pk)  # Get the blog post by its primary key (pk)
+    tag_list = list(blog.tags.values_list('name', flat=True))  # Get list of existing tags for the blog
+
+    if request.method == 'POST':
+        form = BlogForm(request.POST, instance=blog)  # Populate form with new data
+        if form.is_valid():
+            form.save()  # Save the updated blog post
+            return redirect('home')  # Redirect to home after saving
+    else:
+        form = BlogForm(instance=blog)  # Pre-fill the form with current blog data
+        form.initial['tags'] = ', '.join(tag_list)  # Show current tags as a comma-separated string
+
+    return render(request, 'blog/update_blog.html', {'form': form, 'blog': blog})
