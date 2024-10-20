@@ -4,7 +4,7 @@ from .models import Employee, Book
 # Register Employee model as it is
 admin.site.register(Employee)
 
-# Customize admin for Book model to display tags
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('book_name',)  # Display book name in the admin list view
