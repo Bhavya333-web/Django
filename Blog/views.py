@@ -31,7 +31,7 @@ def register(request):
             except Exception as e:
                 print(f"Failed to send email: {e}")
 
-            return redirect('home')  # Redirect to home after registration
+            return redirect('home')  
     else:
         form = UserRegistrationForm()
     
