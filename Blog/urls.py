@@ -5,7 +5,8 @@ from .views import create_blog
 from .views import register, home_view
 
 urlpatterns = [
-    path('', views.app_view, name="app"),  # Main app view
+
+    path('', views.app_view, name="app"), 
     path('home/', home_view, name='home'),  # Home page
     path('about/', views.about_view, name='about'),  # About page
     path('contact/', views.contact_view, name='contact'),  # Contact page
@@ -15,5 +16,5 @@ urlpatterns = [
     path('create/', create_blog, name='create_blog'),  
     path('delete/<int:book_id>/', delete_book, name='delete'),
     path('register/', register, name='register'),
-    # ... other URL patterns
+   
 ]
