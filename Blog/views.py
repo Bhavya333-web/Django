@@ -1,30 +1,64 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required  # Add this line for login_required
-from .models import Employee, Book, Blog  # Add Blog model
-from .forms import ContactForm, ContactModelForm, BookForm, BlogForm  # Add BlogForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Employee, Book, Blog
+from .forms import ContactForm, ContactModelForm, BookForm, BlogForm, UserRegistrationForm  # Add UserRegistrationForm
 from taggit.models import Tag
-from .forms import BlogForm
-from .models import Book  # Adjust this import based on your models
+from .forms import UserRegistrationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])  # Ensure your form has this field
+            user.save()
+            login(request, user)
+            
+            # Sending Welcome Email to New User
+            subject = 'Welcome to Our Mblog!'
+            message = f'Hi {user.username},\n\nThank you for signing up on our blog platform. We hope you enjoy your stay!\n\nBest regards,\nThe Team'
+            recipient_list = [user.email]
+            
+            try:
+                send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
+            except Exception as e:
+                print(f"Failed to send email: {e}")
+
+            return redirect('home')  # Redirect to home after registration
+    else:
+        form = UserRegistrationForm()
+    
+    return render(request, 'register.html', {'form': form})
+
+    # your view logic
+
+
+
+
 
 def delete_book(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     if request.method == 'POST':
         book.delete()
-        return redirect('app')  # Redirect to your main app page or wherever you want
+        return redirect('app')
     return render(request, 'delete.html', {'book_name': book.book_name})
-
 
 def create_blog(request):
     if request.method == 'POST':
         form = BlogForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('some-view-name')  # Update with your redirect URL
+            return redirect('some-view-name')
     else:
         form = BlogForm()
-
     return render(request, 'create_blog.html', {'form': form})
-
 
 # Combined Contact Form View
 def contact_view(request):
@@ -36,14 +70,13 @@ def contact_view(request):
         if 'contact_form' in request.POST:
             contact_form = ContactForm(request.POST)
             if contact_form.is_valid():
-                # Process the data in contact_form.cleaned_data as required
                 print(contact_form.cleaned_data)
                 success_message = "Contact form submitted successfully!"
         
         elif 'model_form' in request.POST:
             model_form = ContactModelForm(request.POST)
             if model_form.is_valid():
-                model_form.save()  # Save the model form data to the database
+                model_form.save()
                 success_message = "Your message has been sent successfully!"
 
     return render(request, 'contact.html', {
@@ -57,13 +90,11 @@ def app_view(request):
     emp = Employee.objects.all()
     books = Book.objects.all()
 
-    # Filter by tag if provided
     tag_filter = request.GET.get('tag')
     if tag_filter:
         books = books.filter(tags__name__in=[tag_filter])
 
-    tags = Tag.objects.all()  # Get all tags for the dropdown
-
+    tags = Tag.objects.all()
     return render(request, 'app.html', {
         'emp': emp,
         'books': books,
@@ -81,14 +112,13 @@ def book_create_edit(request, book_id=None):
     if request.method == 'POST':
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
-            form.save()  # Save the book and its tags
-            return redirect('app')  # Redirect to app view after saving
+            form.save()
+            return redirect('app')
     else:
         form = BookForm(instance=book)
 
     return render(request, 'book_form.html', {'form': form})
- # Redirect to a success page or another view
-   
+
 # Home Page View
 def home_view(request):
     return render(request, 'home.html')
@@ -101,30 +131,32 @@ def about_view(request):
 def static_contact_view(request):
     return render(request, 'contact_static.html')
 
-# **Blog Update View with @login_required**
-@login_required  # Only logged-in users can update the blog
+# User Registration View
+
+# Blog Update View with @login_required
+@login_required
 def update_blog(request, pk):
-    blog = get_object_or_404(Blog, pk=pk)  # Get the blog post by its primary key (pk)
-    tag_list = list(blog.tags.values_list('name', flat=True))  # Get list of existing tags for the blog
+    blog = get_object_or_404(Blog, pk=pk)
+    tag_list = list(blog.tags.values_list('name', flat=True))
 
     if request.method == 'POST':
-        form = BlogForm(request.POST, instance=blog)  # Populate form with new data
+        form = BlogForm(request.POST, instance=blog)
         if form.is_valid():
-            form.save()  # Save the updated blog post
-            return redirect('home')  # Redirect to home after saving
+            form.save()
+            return redirect('home')
     else:
-        form = BlogForm(instance=blog)  # Pre-fill the form with current blog data
-        form.initial['tags'] = ', '.join(tag_list)  # Show current tags as a comma-separated string
+        form = BlogForm(instance=blog)
+        form.initial['tags'] = ', '.join(tag_list)
 
     return render(request, 'blog/update_blog.html', {'form': form, 'blog': blog})
 
-# **Blog Delete View with @login_required**
-@login_required  # Only logged-in users can delete the blog
+# Blog Delete View with @login_required
+@login_required
 def delete_blog(request, pk):
-    blog = get_object_or_404(Blog, pk=pk)  # Get the blog post by its primary key (pk)
+    blog = get_object_or_404(Blog, pk=pk)
 
-    if request.method == 'POST':  # If the form is submitted
-        blog.delete()  # Delete the blog post
-        return redirect('home')  # Redirect to home after deletion
+    if request.method == 'POST':
+        blog.delete()
+        return redirect('home')
 
-    return render(request, 'blog/delete_blog.html', {'blog': blog})  # Render the confirmation page
+    return render(request, 'blog/delete_blog.html', {'blog': blog})
