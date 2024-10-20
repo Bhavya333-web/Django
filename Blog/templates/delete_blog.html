@@ -1,5 +1,6 @@
 {% extends 'base.html' %} 
 {% block content %} 
+
 <section class="delete-blog"> 
  <h1>Delete Blog</h1> 
  <p>Are you sure you want to delete "{{ blog.title }}"?</p> 
@@ -9,4 +10,5 @@
  <a href="{% url 'home' %}">Cancel</a>
 </form>
 </section>
+
 {% endblock %}
