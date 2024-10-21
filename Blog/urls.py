@@ -16,5 +16,11 @@ urlpatterns = [
     path('create/', create_blog, name='create_blog'),  
     path('delete/<int:book_id>/', delete_book, name='delete'),
     path('register/', register, name='register'),
+     path('send-email/', views.send_email_view, name='send_email'),
+   
+]
+
+
+urlpatterns = [
    
 ]
