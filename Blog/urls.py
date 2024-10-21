@@ -20,7 +20,3 @@ urlpatterns = [
    
 ]
 
-
-urlpatterns = [
-   
-]
