@@ -3,7 +3,7 @@ from . import views
 from .views import delete_book  
 from .views import create_blog
 from .views import register, home_view
-
+from .views import PostListCreate
 urlpatterns = [
 
     path('', views.app_view, name="app"), 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('delete/<int:book_id>/', delete_book, name='delete'),
     path('register/', register, name='register'),
      path('send-email/', views.send_email_view, name='send_email'),
-   
+     path('api/posts/', PostListCreate.as_view(), name='post-list-create'),
+ 
 ]
 

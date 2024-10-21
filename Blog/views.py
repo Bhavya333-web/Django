@@ -12,6 +12,15 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from .forms import EmailForm
+from rest_framework import generics
+from .models import Post
+from .serializers import PostSerializer
+
+# API view to list all posts and create a new one
+class PostListCreate(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
 
 
 def send_email_view(request):
