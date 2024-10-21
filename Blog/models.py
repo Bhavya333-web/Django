@@ -1,6 +1,17 @@
 from django.db import models
 from taggit.managers import TaggableManager  # Import TaggableManager
 
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 # Employee model
 class Employee(models.Model):
     emp_id = models.AutoField(primary_key=True)
