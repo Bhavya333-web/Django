@@ -10,6 +10,32 @@ from .forms import UserRegistrationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from .forms import EmailForm
+
+
+def send_email_view(request):
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            recipient_email = form.cleaned_data['recipient_email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            # Send the email
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [recipient_email],  # List of recipient emails
+                fail_silently=False,
+            )
+            return render(request, 'email_success.html')
+    else:
+        form = EmailForm()
+
+    return render(request, 'send_email.html', {'form': form})
+
 
 @csrf_exempt
 def register(request):

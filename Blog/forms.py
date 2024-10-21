@@ -5,6 +5,13 @@ from .models import Book
 from .models import Blog
 from django.contrib.auth.models import User
 
+
+class EmailForm(forms.Form):
+    recipient_email = forms.EmailField(label='Recipient Email')
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+
+
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(widget=forms.PasswordInput)
