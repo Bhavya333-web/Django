@@ -16,6 +16,10 @@ from rest_framework import generics
 from .models import Post
 from .serializers import PostSerializer
 
+
+
+
+
 # API view to list all posts and create a new one
 class PostListCreate(generics.ListCreateAPIView):
     queryset = Post.objects.all()
