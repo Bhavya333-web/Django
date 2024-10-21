@@ -4,14 +4,14 @@ import axios from 'axios';
 function App() {
   const [posts, setPosts] = useState([]);
 
-  // Fetch posts from Django API when the component mounts
+  // Fetch posts from Django API when component mounts
   useEffect(() => {
     axios.get('http://localhost:8000/api/posts/')
       .then(response => {
-        setPosts(response.data);
+        setPosts(response.data);  // Set posts data
       })
       .catch(error => {
-        console.error('Error fetching posts:', error);
+        console.error("There was an error fetching the posts!", error);
       });
   }, []);
 
@@ -31,4 +31,3 @@ function App() {
 }
 
 export default App;
-
